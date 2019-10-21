@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-ph::ScriptFunctionHandle Bullet::update;
+ph::ScriptFunctionHandle Bullet::update, Bullet::draw;
 
 using namespace AngelScript;
 
@@ -31,10 +31,11 @@ void RegisterBullet() {
 		constexpr char typeName[] = "BulletBehavior";
 
 		r = engine->RegisterInterfaceMethod(typeName, "void Update(GameInterface&, BulletData&)"); assert(r >= 0);
-//		r = engine->RegisterInterfaceMethod(typeName, "void Draw(const BulletData&)"); assert(r >= 0);
+		r = engine->RegisterInterfaceMethod(typeName, "void Draw(const BulletData&, const BulletContainer&)"); assert(r >= 0);
 
 		auto type = engine->GetTypeInfoByName(typeName);
 		Bullet::update = type->GetMethodByName("Update");
+		Bullet::draw= type->GetMethodByName("Draw");
 	}
 
 	{
@@ -45,6 +46,7 @@ void RegisterBullet() {
 		r = engine->RegisterObjectProperty(typeName, "float scale", asOFFSET(ContainerType, scale)); assert(r >= 0);
 		r = engine->RegisterObjectProperty(typeName, "float rad", asOFFSET(ContainerType, rad)); assert(r >= 0);
 		r = engine->RegisterObjectProperty(typeName, "int score", asOFFSET(ContainerType, score)); assert(r >= 0);
+		r = engine->RegisterObjectProperty(typeName, "bool drawFlag", asOFFSET(ContainerType, drawFlag)); assert(r >= 0);
 		
 		r = engine->RegisterObjectBehaviour(typeName, asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ContainerConstruct), asCALL_CDECL_OBJLAST); assert(r >= 0);
 	}

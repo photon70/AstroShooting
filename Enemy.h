@@ -14,6 +14,7 @@ struct EnemyContainer {
 	String txt;
 	int timeLimit;
 	int targetNumber;
+	int stageType = 0;
 };
 
 //“G‚Ì‚Â‰Â•Ïƒf[ƒ^
@@ -46,6 +47,12 @@ public:
 	EnemyData data;
 	ph::ScriptObject behavior;
 	ph::CoroutineScriptFunction<UpdateFunc> coUpdate;
+
+	enum EnemyType {
+		Normal,
+		SuddenDeath,
+		Tutorial
+	};
 
 	Enemy(const EnemyContainer& container, ph::ScriptObject behavior) :
 		container(container), behavior(behavior) {

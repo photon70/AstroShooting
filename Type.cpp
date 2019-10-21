@@ -21,11 +21,13 @@ void RegisterTypes() {
 	r = engine->RegisterObjectType("BulletContainer", sizeof(BulletContainer), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C); assert(r >= 0);
 	r = engine->RegisterObjectType("BulletData", sizeof(BulletData), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C); assert(r >= 0);
 
+	r = engine->RegisterEnum("StageType"); assert(r >= 0);
 	r = engine->RegisterInterface("EnemyBehavior"); assert(r >= 0);
 	r = engine->RegisterObjectType("EnemyContainer", sizeof(EnemyContainer), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C); assert(r >= 0);
 	r = engine->RegisterObjectType("EnemyData", sizeof(EnemyData), asOBJ_VALUE | asOBJ_POD | asOBJ_APP_CLASS_C); assert(r >= 0);
 
 	//Œ^‚Ì’è‹`
+	RegisterResource();
 	RegisterGameData();
 	RegisterCircleF();
 	RegisterGameInterface();

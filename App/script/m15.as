@@ -4,6 +4,7 @@ BulletContainer c = GetBulletS();
 BulletContainer c2 = GetBulletM(1.2, ColorF(1.0, 0.9, 0.7));
 
     void Update(GameInterface &inout inter, EnemyData &inout data){
+        inter.aStardust = true;
         int i = 0;
         while(true){
             repeat k = 8;
@@ -16,6 +17,7 @@ BulletContainer c2 = GetBulletM(1.2, ColorF(1.0, 0.9, 0.7));
                 while(m()){
                     inter.RegisterBullet(c2, BulletData(data.pos, radial(m) + aim(data.pos, inter.player)), @BBStraight(4.2));
                 }
+            inter.aStar2 = true;
             }
             wait(3);
         }

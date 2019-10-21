@@ -1,9 +1,10 @@
 class Waterjar : EnemyBehavior{
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     BulletContainer c = GetBulletS(1.0, ColorF(0.7, 0.9, 1.0));
     BulletContainer c2 = GetBulletS(1.0, ColorF(0.8, 0.9, 1.0));
 
     void Update(GameInterface &inout inter, EnemyData &inout data){
+        inter.aStardust= true;
         repeat i = 3;
         while(i()){
             auto rad = radial(i) + aim(data.pos, inter.player);
@@ -16,6 +17,7 @@ class Waterjar : EnemyBehavior{
                 }
             }
         }
+        inter.aStar1 = true;
     //    wait(120);
         i = 10;
         while(i()){

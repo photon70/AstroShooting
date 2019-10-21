@@ -13,6 +13,7 @@ struct BulletContainer {
 	float scale = 1.0f;
 	float rad = 0;
 	int score = 0;
+	bool drawFlag = false;
 };
 
 //’e‚Ì‚Â‰Â•Ïƒf[ƒ^
@@ -88,27 +89,33 @@ struct BulletData {
 
 struct Bullet {
 public:
-	static ph::ScriptFunctionHandle update;
-	const BulletContainer& container;
+	static ph::ScriptFunctionHandle update, draw;
+	const BulletContainer* container = nullptr;
 	BulletData data;
 	ph::ScriptObject behavior;
 
 	Bullet(const BulletContainer& container, BulletData& data, ph::ScriptObject behavior) :
-		container(container), data(data), behavior(behavior) {
+		container(&container), data(data), behavior(behavior) {
 
 	}
+
+	Bullet(const Bullet& b) = delete;
 
 	virtual ~Bullet() = default;
 
 	void Update(ph::AdvancedScript& script, GameInterface& inter) {
-		if (!behavior)data.pos += data.angle;
-		else script.getObjectMethod<void(GameInterface&, BulletData&)>(update, behavior)(inter, data);
+		script.getObjectMethod<void(GameInterface&, BulletData&)>(update, behavior)(inter, data);
 		++data.count;
+		data.radian = Math::Atan2(data.angle.y, data.angle.x) + Math::HalfPi;
 	}
 
-	void Draw()const {
-		auto rad = Math::Atan2(data.angle.y, data.angle.x);
-		container.texture.scaled(container.scale).rotated(rad + (data.count / 10 % 2 == 0 ? 45_deg : 0)).drawAt(data.pos, container.color);
+	void Draw(ph::AdvancedScript& script)const {
+		if (!container->drawFlag) {
+			container->texture.scaled(container->scale).rotated(data.radian + (data.count / 10 % 2 == 0 ? 45_deg : 0)).drawAt(data.pos, container->color);
+		}
+		else {
+			script.getObjectMethod<void(const BulletData&, const BulletContainer&)>(draw, behavior)(data, *container);
+		}
 	}
 
 	bool IsDelete()const {
@@ -116,6 +123,6 @@ public:
 	}
 
 	CircleF GetCircle()const {
-		return CircleF(data.pos, container.rad);
+		return CircleF(data.pos, container->rad);
 	}
 };

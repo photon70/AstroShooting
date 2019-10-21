@@ -1,0 +1,138 @@
+//////////////////////////////////////////////////////
+# define DefineResource(identifier,type,path) identifier type #path
+# define Resource(path) DefineResource(path, FILE, path)
+
+//////////////////////////////////////////////////////
+//
+// Siv3D Engine Resources (DO NOT REMOVE)
+//
+//////////////////////////////////////////////////////
+DefineResource(100, ICON, icon.ico)
+Resource(engine/shader/sprite.vs)
+Resource(engine/shader/shape.ps)
+Resource(engine/shader/line_dot.ps)
+Resource(engine/shader/line_round_dot.ps)
+Resource(engine/shader/sprite.ps)
+Resource(engine/shader/sprite_sdf.ps)
+Resource(engine/font/mplus/mplus-1p-regular.ttf.zst)
+Resource(engine/texture/box-shadow/256.png)
+Resource(engine/texture/box-shadow/128.png)
+Resource(engine/texture/box-shadow/64.png)
+Resource(engine/texture/box-shadow/32.png)
+Resource(engine/texture/box-shadow/16.png)
+Resource(engine/texture/box-shadow/8.png)
+
+//////////////////////////////////////////////////////
+//
+// Siv3D Engine Optional Resources (Can be removed if not required)
+//
+//////////////////////////////////////////////////////
+Resource(engine/font/mplus/mplus-1p-thin.ttf.zst)
+Resource(engine/font/mplus/mplus-1p-light.ttf.zst)
+Resource(engine/font/mplus/mplus-1p-medium.ttf.zst)
+Resource(engine/font/mplus/mplus-1p-bold.ttf.zst)
+Resource(engine/font/mplus/mplus-1p-heavy.ttf.zst)
+Resource(engine/font/mplus/mplus-1p-black.ttf.zst)
+Resource(engine/font/noto/NotoColorEmoji.ttf.zst)
+Resource(engine/font/noto/NotoEmoji-Regular.ttf.zst)
+Resource(engine/font/fontawesome/brands.otf.zst)
+Resource(engine/font/fontawesome/solid.otf.zst)
+Resource(engine/objdetect/haarcascade/eye.xml.zst)
+Resource(engine/objdetect/haarcascade/eye_eyeglasses.xml.zst)
+Resource(engine/objdetect/haarcascade/face_anime.xml.zst)
+Resource(engine/objdetect/haarcascade/frontal_catface.xml.zst)
+Resource(engine/objdetect/haarcascade/frontal_face_alt2.xml.zst)
+Resource(engine/soundfont/GMGSx.sf2.zst)
+
+//////////////////////////////////////////////////////
+//
+// Siv3D App Resources (Your application resources here)
+//
+//////////////////////////////////////////////////////
+
+
+
+/* 
+	//
+	// Define your resource path inside `Resource()` macro.
+	// No double quotation marks and white spaces may appear.
+	//
+	Resource(example/siv3d-kun.png)		// ok
+	Resource(example/windmill.png)		// ok
+	Resource(assets/a b c.txt)			// error: contains white spaces
+	Resource("example/windmill.png")	// error: contains double quotation marks
+
+	//
+	// If your file contains a white space, define the identifier without using Resource() macro.
+	//
+	MYIDENTIFIER_1 FILE "assets/a b c.txt"
+	MYIDENTIFIER_2 FILE "level 1/map.dat"
+*/
+
+
+Resource(AS/dammy.as)
+
+Resource(AS/851MkPOP_002.ttf)
+
+Resource(AS/ok.mp3)
+Resource(AS/cancel.mp3)
+Resource(AS/select.mp3)
+Resource(AS/page.mp3)
+Resource(AS/shutter.mp3)
+Resource(AS/move.mp3)
+Resource(AS/flash.mp3)
+Resource(AS/hit.mp3)
+Resource(AS/charge.mp3)
+Resource(AS/charged.mp3)
+Resource(AS/change.mp3)
+
+Resource(AS/star1.mp3)
+Resource(AS/star2.mp3)
+Resource(AS/stardust.mp3)
+
+Resource(AS/clear.mp3)
+Resource(AS/over.mp3)
+
+Resource(AS/title.mp3)
+Resource(AS/page1.mp3)
+Resource(AS/page2.mp3)
+Resource(AS/page3.mp3)
+Resource(AS/page4.mp3)
+Resource(AS/page5.mp3)
+
+//Data
+Resource(AS/source.dat)
+
+//Title
+Resource(AS/title.png)
+
+//Setting
+Resource(AS/setting.png)
+
+//Menu
+Resource(AS/menu.png)
+Resource(AS/cursor.png)
+Resource(AS/circle.png)
+Resource(AS/player_as.png)
+
+//Manual
+Resource(AS/manual.png)
+
+//Game
+Resource(AS/back.png)
+Resource(AS/frame.png)
+Resource(AS/tape.png)
+
+//player
+Resource(AS/player_b.png)
+Resource(AS/finder.png)
+Resource(AS/camera.png)
+Resource(AS/cameraHit.png)
+
+//Script
+Resource(AS/star_1.png)
+Resource(AS/star_2.png)
+Resource(AS/m31.png)
+Resource(AS/et_cluster.png)
+
+Resource(AS/electro.png)

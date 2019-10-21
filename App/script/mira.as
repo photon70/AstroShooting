@@ -19,15 +19,17 @@ class BBMira : BulletBehavior{
                 data.deleteFlag = true;
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class Mira : EnemyBehavior{
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     BulletContainer c = GetBulletS(1, ColorF(1.0, 0.9, 0.8));
 
     void Update(GameInterface &inout inter, EnemyData &inout data){
         repeat m = 2;
         while(m()){
+            inter.aStardust = true;
             repeat k = 40;
             while(k()){
                 BBMira b(3, sign(m) * (0.008 + 0.0005 * k), 60, 10);
@@ -37,6 +39,7 @@ class Mira : EnemyBehavior{
                 }
                 wait(10);
             }
+            inter.aStardust = false;
             wait(300);
         }
     }

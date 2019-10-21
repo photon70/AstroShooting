@@ -27,8 +27,14 @@ void RegisterGameInterface() {
 
 	r = engine->RegisterObjectProperty(typeName, "Float2 player", asOFFSET(TypeName, player)); assert(r >= 0);
 	r = engine->RegisterObjectProperty(typeName, "Float2 enemy", asOFFSET(TypeName, enemy)); assert(r >= 0);
+	r = engine->RegisterObjectProperty(typeName, "int photoNum", asOFFSET(TypeName, photoNum)); assert(r >= 0);
+
+	r = engine->RegisterObjectProperty(typeName, "bool aStar1", asOFFSET(TypeName, aStar1)); assert(r >= 0);
+	r = engine->RegisterObjectProperty(typeName, "bool aStar2", asOFFSET(TypeName, aStar2)); assert(r >= 0);
+	r = engine->RegisterObjectProperty(typeName, "bool aStardust", asOFFSET(TypeName, aStardust)); assert(r >= 0);
 
 	r = engine->RegisterObjectMethod(typeName, "void RegisterBullet(const BulletContainer&, BulletData, BulletBehavior@)", asMETHODPR(TypeName, RegisterBullet, (const BulletContainer&, BulletData, AngelScript::asIScriptObject*), void), asCALL_THISCALL); assert(r >= 0);
+	r = engine->RegisterObjectMethod(typeName, "void Debug(String)", asMETHODPR(TypeName, Debug, (String), void), asCALL_THISCALL); assert(r >= 0);
 
 	r = engine->RegisterObjectBehaviour(typeName, asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(Construct), asCALL_CDECL_OBJLAST); assert(r >= 0);
 	r = engine->RegisterObjectBehaviour(typeName, asBEHAVE_DESTRUCT, "void f()", asFUNCTION(Destruct), asCALL_CDECL_OBJLAST); assert(r >= 0);

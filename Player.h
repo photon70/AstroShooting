@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Header.h"
+#include "Resource.h"
 
 struct GameData;
 struct GameInterface;
@@ -8,28 +9,43 @@ struct GameInterface;
 struct Player {
 private:
 	Float2 pos = Float2(0, 200);
+	int count;
+
 	float finder = -Math::HalfPiF;
 	int finderCnt = 0;
+	float finderSize = 1.0;
+	const float finderSizeMin = 1.0 / 9.0;
+	const int finderTimeDelay = 30;
+	const int finderTime = 80;
 	bool cameraAngleFlag = true;
 	const float outerRad = 24;
 	const float rad = 4;
+	int shiftCount = 0;
+	int shiftCountTime = 10;
+	bool chargeFlag = false;
+
+	bool shotMode;
 
 	Float2 finderPos;
 	int cameraChargeMax = 1000;
 	int cameraCharge = cameraChargeMax * 0.6;
 	int chargeCount = 0;
+	bool charged = false;
 
-	const int defaultCameraInterval = 60;
+	bool changed = false;
+
+	const int defaultCameraInterval = 120;
 	int recover = 0;
 	int cameraInterval = 0;
 
-	Texture player = Texture(U"AS/player_b.png");
-	Texture finderTex = Texture(U"AS/finder.png");
-	Texture cameraTex = Texture(U"AS/camera.png");
+	Texture player = Texture(GetResource(U"AS/player_b.png"));
+	Texture finderTex = Texture(GetResource(U"AS/finder.png"));
+	Texture cameraTex = Texture(GetResource(U"AS/camera.png"));
+	Texture cameraHitTex = Texture(GetResource(U"AS/cameraHit.png"));
 
 	const float defaultFinderDis = 120;
 	const float maxFinderDis = 200;
-	float finderDis = defaultFinderDis;
+	float finderDis = 60;
 
 	GameData& data;
 
@@ -49,7 +65,7 @@ private:
 		return finder + (cameraAngleFlag ? 90_deg : 0);
 	}
 public:
-	Player(GameData& data);
+	Player(GameData& data, int time);
 
 	void Update(GameInterface& inter);
 
@@ -72,6 +88,10 @@ public:
 		this->recover = recover;
 	}
 
+	void ResetChargeCount() {
+		chargeCount = 0;
+	}
+
 	const Float2& GetPos()const {
 		return pos;
 	}
@@ -81,14 +101,33 @@ public:
 	}
 
 	const Quad& GetCameraQuad()const {
-		return cameraRect.rotated(GetCameraAngle());
+		return cameraRect.scaled(finderSize).rotated(GetCameraAngle());
 	}
 
 	const Quad& GetCameraFrameQuad()const {
-		return cameraFrameRect.rotated(GetCameraAngle());
+		auto r = cameraRect.scaled(finderSize);
+		r.setPos(r.pos - Size(5, 5));
+		r.setSize(r.size + Size(10, 10));
+		return r.rotated(GetCameraAngle());
 	}
 
 	const Circle& GetCircle()const {
 		return Circle(pos, rad);
+	}
+
+	bool Charging()const {
+		return chargeCount > 30 && cameraCharge != cameraChargeMax;
+	}
+
+	bool Charged()const {
+		return charged;
+	}
+
+	bool Changed()const {
+		return changed;
+	}
+
+	bool StartCharge()const {
+		return cameraInterval == defaultCameraInterval;
 	}
 };

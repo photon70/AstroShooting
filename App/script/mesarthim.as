@@ -1,5 +1,5 @@
 class Mesarthim : EnemyBehavior{
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     Array<Point> p = {Point(5, 0), Point(-5, 0)};
     Array<BulletContainer> c = {
         GetBulletS(1, ColorF(0.95, 1.0, 0.98)), 
@@ -7,6 +7,7 @@ class Mesarthim : EnemyBehavior{
         GetBulletS(1, ColorF(1.0, 1.0, 0.95))};
 
     void Update(GameInterface &inout inter, EnemyData &inout data){
+        inter.aStardust = true;
         repeat k = 360;
         while(k()){
         repeat m = 2;

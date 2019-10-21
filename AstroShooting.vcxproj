@@ -205,6 +205,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhLib\AdvancedScript.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Type.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -278,15 +279,20 @@
     <ClInclude Include="GameInterface.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="ArrowKey.h" />
+    <ClInclude Include="ManualScene.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="PhLib\AdvancedScript.hpp" />
     <ClInclude Include="PhLib\BinaryStream.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="Save.h" />
     <ClInclude Include="ScriptBind.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SettingScene.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Utility.h" />
+    <ClInclude Include="WindowSetting.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

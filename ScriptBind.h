@@ -4,6 +4,8 @@
 
 void RegisterTypes();
 
+void RegisterResource();
+
 void RegisterGameData();
 
 void RegisterCircleF();

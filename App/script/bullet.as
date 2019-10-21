@@ -1,7 +1,7 @@
 //基本の弾の定義
 BulletContainer GetBulletM(float scale = 1.0, ColorF color = Palette::White){
     BulletContainer b;
-    b.texture = Texture("AS/star_1.png");
+    b.texture = Texture(GetResource("AS/star_1.png"));
     b.color = color;
     b.scale = scale;
     b.rad = 4.0 * scale;
@@ -11,7 +11,7 @@ BulletContainer GetBulletM(float scale = 1.0, ColorF color = Palette::White){
 
 BulletContainer GetBulletS(float scale = 1.0, ColorF color = Palette::White){
     BulletContainer b;
-    b.texture = Texture("AS/star_2.png");
+    b.texture = Texture(GetResource("AS/star_2.png"));
     b.color = color;
     b.scale = scale;
     b.rad = 3.0 * scale;
@@ -66,6 +66,10 @@ class repeat{
     int opImplConv()const {
         return count;
     }
+
+    int opNeg()const {
+        return -count;
+    }
 }
 
 class Locate{
@@ -109,6 +113,12 @@ Float2 angle(float radian){
 float shake(float range = 180){
     range = dtr(range);
     return Random(-range, range);
+}
+
+Float2 randCir(float radius){
+    radius = Random(radius);
+    float radian = shake();
+    return radius * Float2(Math::Cos(radian), Math::Sin(radian));
 }
 
 float sign(int n){
@@ -177,6 +187,10 @@ float aim(Float2 shooter, Float2 target){
     return Math::Atan2(target.y - shooter.y, target.x - shooter.x) + Math::HalfPi;
 }
 
+float atan(Float2 vec){
+    return Math::Atan2(vec.y, vec.x) + Math::HalfPi;
+}
+
 float Bezier(float r1, float r2, double t){
     return (1.0 - t) * r1 + t * r2;
 }
@@ -192,6 +206,16 @@ Float2 Bezier(Float2 pos1, Float2 pos2, Float2 pos3, double t){
 bool arrange(BulletData &inout data, float radius, float time){
     if(data.count < time){
         data.pos += data.angle * radius / time;
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+bool arrange(BulletData &inout data, Float2 vec, float time){
+    if(data.count < time){
+        data.pos += vec / time;
         return false;
     }
     else{
@@ -221,6 +245,8 @@ class BBStraight : BulletBehavior{
     void Update(GameInterface &inout inter, BulletData &inout data){
         data.pos += data.angle * speed;
     }
+
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class BBStraightA : BulletBehavior{
@@ -238,6 +264,7 @@ class BBStraightA : BulletBehavior{
         if(arrange(data, radius, time))
             data.pos += data.angle * speed;
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class BBStraightAccel : BulletBehavior{
@@ -257,6 +284,7 @@ class BBStraightAccel : BulletBehavior{
         if(accel > 0) if(speed > maxSpeed)speed = maxSpeed;
         if(accel < 0) if(speed < maxSpeed)speed = maxSpeed;
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class BBStraightAccelA : BulletBehavior{
@@ -282,6 +310,7 @@ class BBStraightAccelA : BulletBehavior{
             if(accel < 0) if(speed < maxSpeed)speed = maxSpeed;
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class BBCurve : BulletBehavior{
@@ -297,6 +326,23 @@ class BBCurve : BulletBehavior{
         data.angle += Mat3x2::Rotate(dtr(90)).transform(data.angle).normalized() * accel;
         data.pos += data.angle * speed;
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
+};
+
+class BBCurveS : BulletBehavior{
+    float speed;
+    float accel;
+
+    BBCurveS(float pSpeed, float pAccel){
+        speed = pSpeed;
+        accel = pAccel;
+    }
+
+    void Update(GameInterface &inout inter, BulletData &inout data){
+        data.angle = Mat3x2::Rotate(accel).transform(data.angle);
+        data.pos += data.angle * speed;
+    }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class BBCurveA : BulletBehavior{
@@ -318,4 +364,29 @@ class BBCurveA : BulletBehavior{
             data.pos += data.angle * speed;
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
+};
+
+class BBCurveSAW : BulletBehavior{
+    float speed;
+    float accel;
+    float radius;
+    float time;
+    float wait;
+
+    BBCurveSAW(float pSpeed, float pAccel, float pRadius, float pTime, float pWait){
+        speed = pSpeed;
+        accel = pAccel;
+        radius = pRadius;
+        time = pTime;
+        wait = pWait;
+    }
+
+    void Update(GameInterface &inout inter, BulletData &inout data){
+        if(arrange(data, radius, time) && data.count > time + wait){
+            data.angle = Mat3x2::Rotate(accel).transform(data.angle);
+            data.pos += data.angle * speed;
+        }
+    }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };

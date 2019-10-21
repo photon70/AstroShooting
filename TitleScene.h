@@ -2,6 +2,18 @@
 
 #include "Scene.h"
 
+void ChangeWindowSize(int type) {
+
+}
+
+void ChangeBGMVolume(int rate) {
+
+}
+
+void ChangeSoundVolume(int rate) {
+
+}
+
 class TitleScene : public SceneMaster::Scene {
 private:
 	const Vec2 drawPosHome = Vec2(0, -320);
@@ -9,7 +21,7 @@ private:
 	const Vec2 drawPosToManual = Vec2(1280, -0);
 	const int transTime = 20;
 
-	Texture title = Texture(U"AS/title.png");
+	Texture title = Texture(GetResource(U"AS/title.png"));
 	GameData& data;
 	int select = 0;
 	int count = 0;
@@ -39,6 +51,7 @@ public:
 			stringDence = 0;
 			state = FromMenu;
 		}
+		data.PlayBGM(data.aTitle);
 	}
 
 	void update()override {
@@ -48,14 +61,16 @@ public:
 		default:
 		case TitleScene::Normal:
 			if (data.up.down()) {
-				select += 2;
+				select += 3;
 				count = 0;
+				data.PlayOneShot(data.aSelect);
 			}
 			if (data.down.down()) {
 				++select;
 				count = 0;
+				data.PlayOneShot(data.aSelect);
 			}
-			select %= 3;
+			select %= 4;
 
 			++count;
 
@@ -73,7 +88,11 @@ public:
 				case 2:
 					state = Settings;
 					break;
+				case 3:
+					System::Exit();
+					break;
 				}
+				data.PlayOneShot(data.aOk);
 			}
 			break;
 		case TitleScene::ToMenu:
@@ -82,6 +101,7 @@ public:
 			}
 			else {
 				data.isPageForward = true;
+				data.PlayOneShot(data.aPage);
 				changeScene(U"Menu", 500, true);
 			}
 			t = EaseInSine(static_cast<double>(count) / static_cast<double>(transTime));
@@ -94,7 +114,9 @@ public:
 				++count;
 			}
 			else {
-				changeScene(U"Title", 500);
+				data.isPageForward = true;
+				data.PlayOneShot(data.aPage);
+				changeScene(U"Manual", 500, true);
 			}
 			t = EaseInSine(static_cast<double>(count) / static_cast<double>(transTime));
 			drawPos = drawPosHome + (drawPosToManual - drawPosHome) * t;
@@ -105,7 +127,8 @@ public:
 			if (count < transTime) {
 				++count;
 			}else{
-				changeScene(U"Title");
+				data.isPageForward = true;
+				changeScene(U"Setting", 500, true);
 			}
 			t = EaseInSine(static_cast<double>(count) / static_cast<double>(transTime));
 			stringDence = 1.0 - t;
@@ -126,15 +149,15 @@ public:
 	}
 
 	void draw()const override {
-		Transformer2D t(Mat3x2::Scale(scale * static_cast<double>(Window::Height()) / 960.0));
+		Transformer2D t(Mat3x2::Scale(scale * static_cast<double>(WindowSetting::size.y) / 960.0));
 
 		title.draw(drawPos);
 		
 		auto d = drawPos - drawPosHome;
-		String str[3] = { U"Play!_‚ ‚»‚Ô" , U"Manual_‚ ‚»‚Ñ‚©‚½", U"Settings_‚¹‚Á‚Ä‚¢" };
-		ColorF color[3] = { Palette::Orange, Palette::Yellow, Palette::Aqua };
-		for (auto s : step(3)) {
-			auto vec = Vec2(600, 620 + s * 100) + d;
+		String str[4] = { U"Play!_‚ ‚»‚Ô" , U"Manual_‚ ‚»‚Ñ‚©‚½", U"Settings_‚¹‚Á‚Ä‚¢", U"Quit_‚¨‚í‚é"};
+		ColorF color[4] = { ColorF(1.0, 0.2, 0.1), Palette::Orange, Palette::Yellow, Palette::Aqua };
+		for (auto s : step(4)) {
+			auto vec = Vec2(600, 600 + s * 80) + d;
 			if (s == select && state == TitleScene::Normal)
 				vec.x -= 30 * Sin(180_deg * Min(1.f, (float)count / (float)transTime));
 			data.mk_title(str[s]).draw(vec, ColorF(select != s ? Palette::Lightgrey : color[s]).setA(stringDence));
@@ -151,14 +174,14 @@ public:
 
 			RenderStateBlock2D r(rasterizer);
 
-			auto w = Window::Size();
+			auto w = WindowSetting::GetSize();
 			float hw = w.x / 2;
 
 			if (t > 0.5) {
 				Graphics2D::SetScissorRect(Rect(hw, 0, hw, w.y));
-				Window::ClientRect().draw(ColorF(data.backColor).setA(1.0 - (t - 0.5) * 2.0));
+				WindowSetting::GetRect().draw(ColorF(data.backColor).setA(1.0 - (t - 0.5) * 2.0));
 			}
-			Graphics2D::SetScissorRect(Window::ClientRect());
+			Graphics2D::SetScissorRect(WindowSetting::GetRect());
 
 			Transformer2D trans(Mat3x2::Scale(t, 1.0));
 			draw();
@@ -175,14 +198,14 @@ public:
 			break;
 		case TitleScene::ToMenu:
 			if(t < 0.5)
-				Window::ClientRect().draw(ColorF(data.backColor).setA(t * 2));
+				WindowSetting::GetRect().draw(ColorF(data.backColor).setA(t * 2));
 
 			trans = Transformer2D(Mat3x2::Scale(1.0 - t, 1.0));
 			draw();
 			break;
 		case TitleScene::ToManual:
 			if (t < 0.5) {
-				trans = Transformer2D(Mat3x2::Scale(1.0 - t * 2, 1.0, Float2(640, 0)));
+				trans = Transformer2D(Mat3x2::Scale(1.0 - t * 2, 1.0, Float2(WindowSetting::size.x / 2, 0)));
 				draw();
 			}
 			break;

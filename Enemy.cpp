@@ -51,6 +51,7 @@ void RegisterEnemy() {
 		r = engine->RegisterObjectProperty(typeName, "String nickname", asOFFSET(ContainerType, nickname)); assert(r >= 0);
 		r = engine->RegisterObjectProperty(typeName, "String behaviorName", asOFFSET(ContainerType, behaviorName)); assert(r >= 0);
 		r = engine->RegisterObjectProperty(typeName, "String txt", asOFFSET(ContainerType, txt)); assert(r >= 0);
+		r = engine->RegisterObjectProperty(typeName, "int stageType", asOFFSET(ContainerType, stageType)); assert(r >= 0);
 
 		r = engine->RegisterObjectBehaviour(typeName, asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(ContainerConstruct), asCALL_CDECL_OBJLAST); assert(r >= 0);
 	}
@@ -65,5 +66,14 @@ void RegisterEnemy() {
 
 		r = engine->RegisterObjectMethod(typeName, "EnemyData SetPos(const Float2& in)", asMETHODPR(DataType, SetPos, (const Float2&), EnemyData), asCALL_THISCALL); assert(r >= 0);
 		r = engine->RegisterObjectMethod(typeName, "EnemyData Set(const Float2& in)", asMETHODPR(DataType, SetPos, (const Float2&), EnemyData), asCALL_THISCALL); assert(r >= 0);
+	}
+
+	{
+		constexpr char typeName[] = "StageType";
+
+		r = engine->RegisterEnumValue(typeName, "Normal", (int)Enemy::Normal); assert(r >= 0);
+		r = engine->RegisterEnumValue(typeName, "SuddenDeath", (int)Enemy::SuddenDeath); assert(r >= 0);
+		r = engine->RegisterEnumValue(typeName, "Tutorial", (int)Enemy::Tutorial); assert(r >= 0);
+
 	}
 }

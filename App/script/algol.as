@@ -18,10 +18,11 @@ class BBAlgol : BulletBehavior{
         if(float(data.count) > Math::TwoPi / Abs(accel) + time)
             data.deleteFlag = true;
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class Algol : EnemyBehavior{
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     BulletContainer c = GetBulletS();
     BulletContainer c2 = GetBulletS(0.7, ColorF(1.0, 0.9, 0.7));
     BBStraight bs(2.5);
@@ -29,6 +30,8 @@ class Algol : EnemyBehavior{
     void Update(GameInterface &inout inter, EnemyData &inout data){
         repeat m = 2;
         while(m()){
+            inter.aStar2 = true;
+            inter.aStardust = true;
             float r = shake();
             repeat k = 80;
             while(k()){
@@ -43,6 +46,7 @@ class Algol : EnemyBehavior{
                 }
                 wait(10);
             }
+            inter.aStar1 = true;
             k = 16;
             while(k()){
                 BBAlgol b(4,  sign(m) * (0.07 + 0.0003*k), 0);
@@ -53,6 +57,7 @@ class Algol : EnemyBehavior{
                 wait(5);
             }
             wait(60);
+            inter.aStardust = false;
         }
     }
 

@@ -17,10 +17,11 @@ class BBDelphinus : BulletBehavior{
             data.pos += data.angle;
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 };
 
 class Delphinus : EnemyBehavior{
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     BulletContainer c = GetBulletS();
     BulletContainer c2 = GetBulletM(0.8, ColorF(0.7, 0.95, 1.0));
     Array<Point> p = {
@@ -31,6 +32,7 @@ class Delphinus : EnemyBehavior{
     Point(80, 40)};
 
     void Update(GameInterface &inout inter, EnemyData &inout data){
+        inter.aStardust = true;
         repeat m = 72;
         while(m()){
             repeat i = 6;
@@ -47,6 +49,7 @@ class Delphinus : EnemyBehavior{
             while(k()){
                  inter.RegisterBullet(c2, BulletData(data.pos + p[4], nway(k, dtr(10)) + m * dtr(40) + shake(10)), @BBStraight(3));
             }
+            inter.aStar2 = true;
             wait(20);
         }
     }

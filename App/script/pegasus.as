@@ -20,6 +20,7 @@ class BBPegasus : BulletBehavior{
             data.deleteFlag = true;
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 }
 
 class BBPegasus2 : BulletBehavior{
@@ -42,12 +43,13 @@ class BBPegasus2 : BulletBehavior{
             }
         }
     }
+    void Draw(const BulletData &inout data, const BulletContainer &inout c){}
 }
 
 class Pegusus : EnemyBehavior{
     BulletContainer c2 = GetBulletS(1);
     BulletContainer c3 = GetBulletM(0.6, ColorF(0.9, 0.8, 0.6));
-    Texture tex("AS/star_1.png");
+    Texture tex(GetResource("AS/star_1.png"));
     Float2 p1(95, -70);
     Float2 p2(100, 70);
     Float2 p3(-100, 75);
@@ -61,6 +63,7 @@ class Pegusus : EnemyBehavior{
                 inter.RegisterBullet(c2, BulletData(data.pos + Point(0, -100), nway(k, dtr(80), dtr(8))), @BBPegasus(120, Bezier(50, 500, i.progress()), 30));
                 inter.RegisterBullet(c2, BulletData(data.pos + Point(0, -100), nway(k, -dtr(80), -dtr(8))), @BBPegasus(-120, Bezier(50, 500, i.progress()), 30));
             }
+            inter.aStar2 = true;
             wait(15);
         }
         k = 12;
@@ -70,19 +73,23 @@ class Pegusus : EnemyBehavior{
                 inter.RegisterBullet(c2, BulletData(data.pos + Point(0, -100), nway(k, dtr(80), -dtr(8))), @BBPegasus(120, Bezier(50, 500, i.progress()), 30));
                 inter.RegisterBullet(c2, BulletData(data.pos + Point(0, -100), nway(k, -dtr(80), dtr(8))), @BBPegasus(-120, Bezier(50, 500, i.progress()), 30));
             }
+            inter.aStar2 = true;
             wait(15);
         }
         wait(30);
 
         k = 30;
+        inter.aStardust = true;
         while(k()){
                 inter.RegisterBullet(c3, BulletData(data.pos + p1, radial(k, shake(10))), @BBPegasus2(4, 40, Locate(p1, Bezier(p1, p2, k.progress())), 60));
                 inter.RegisterBullet(c3, BulletData(data.pos + p2, radial(k, shake(10))), @BBPegasus2(4, 40, Locate(p2, Bezier(p2, p3, k.progress())), 60));
                 inter.RegisterBullet(c3, BulletData(data.pos + p3, radial(k, shake(10))), @BBPegasus2(4, 40, Locate(p3, Bezier(p3, p4, k.progress())), 60));
                 inter.RegisterBullet(c3, BulletData(data.pos + p4, radial(k, shake(10))), @BBPegasus2(4, 40, Locate(p4, Bezier(p4, p1, k.progress())), 60));
-
         }
         wait(100);
+        inter.aStardust = false;
+        inter.aStar1 = true;
+        wait(5);
     }
 
     void Draw(const EnemyData& data) {
